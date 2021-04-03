@@ -1,5 +1,5 @@
 // import React from 'react'
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { Table, Tag, Space } from 'antd';
 import { connect } from 'umi';
 import UserMoel from './components/UserModel'
@@ -8,9 +8,9 @@ import UserMoel from './components/UserModel'
 const u1 = ({ users }) => {
 
   const [modelVisible, setModelVisible] = useState(false)
+  const [record, setrecord] = useState(undefined)
 
 
-  
   const handleOk = () => {
     setModelVisible(false)
   };
@@ -18,7 +18,7 @@ const u1 = ({ users }) => {
   const handleCancel = () => {
     setModelVisible(false)
   };
-  
+
 
   const columns = [
     {
@@ -62,8 +62,9 @@ const u1 = ({ users }) => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a onClick={()=>{
+          <a onClick={() => {
             setModelVisible(true)
+            setrecord(record)
           }}>Edit</a>
           <a >Delete</a>
         </Space>
@@ -88,7 +89,12 @@ const u1 = ({ users }) => {
     <div className='ant-select-selection'>
       <h1 >user</h1>
       <Table loading={!data} columns={columns} dataSource={data} />
-      <UserMoel visible={modelVisible} handleOK={handleOk} handleCancel={handleCancel}></UserMoel>
+      <UserMoel
+        visible={modelVisible}
+        handleOK={handleOk}
+        handleCancel={handleCancel}
+        record = {record}
+        ></UserMoel>
 
     </div >
   )

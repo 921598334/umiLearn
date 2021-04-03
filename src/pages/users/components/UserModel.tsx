@@ -11,8 +11,8 @@ const UserModel = (props) => {
             onOk={props.handleOK}
             onCancel={props.handleCancel}>
             <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            {JSON.stringify(props.record)}
+            
         </Modal>
     )
 }
