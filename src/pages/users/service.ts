@@ -1,5 +1,33 @@
 
 import request from 'umi-request';
+import  { extend } from 'umi-request';
+import {  message } from 'antd';
+
+const errorHandler = function(error) {
+    console.log('出现错误')
+    const codeMap = {
+      '404': '页面没有找到',
+      '022': 'It’s a big mistake,',
+      // ....
+    };
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+     
+      message.error(error.data.message)
+      
+    } else {
+      // The request was made but no response was received or error occurs when setting up the request.
+      console.log("网络问题，请求超时间");
+    }
+  
+    //throw error; // If throw. The error will continue to be thrown.
+  
+    // return {some: 'data'}; If return, return the value as a return. If you don't write it is equivalent to return undefined, you can judge whether the response has a value when processing the result.
+    //发现错误后返回空，这样可以让表格不一直显示读取中状态
+     return null;
+  };
+  
 
 
 export async function initOrgInfoRequest(payload) {
@@ -42,13 +70,13 @@ export async function initOrgInfoRequest(payload) {
             console.log('返回成功')
             console.log(response);
 
-
             return data;
 
         })
         .catch(function (error) {
-            console.log("服务端异常：");
-            console.log(error);
+            
+            return errorHandler(error);
+            
         });
 
 
@@ -99,13 +127,10 @@ export async function editRequest(payload) {
             console.log('返回成功')
             console.log(response);
 
-
             return data;
-
         })
         .catch(function (error) {
-            console.log("服务端异常：");
-            console.log(error);
+            return errorHandler(error);
         });
 
 
@@ -167,8 +192,7 @@ export async function addRequest(payload) {
 
         })
         .catch(function (error) {
-            console.log("服务端异常：");
-            console.log(error);
+            return errorHandler(error);
         });
 
 

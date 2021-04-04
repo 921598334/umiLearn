@@ -106,7 +106,6 @@ const u1 = ({ users, dispatch }) => {
 
 
   console.log('u1的data')
-
   //users是reduce直接返回的数据
   const data = users.mydata
 
@@ -126,7 +125,9 @@ const u1 = ({ users, dispatch }) => {
           setModelVisible(true)
         }
       }>添加</Button>
-      <Table loading={!data} columns={columns} dataSource={data} />
+
+      <Table loading={data===undefined} columns={columns} dataSource={data} />
+
       <UserMoel
         visible={modelVisible}
         onFinish={onFinish}
