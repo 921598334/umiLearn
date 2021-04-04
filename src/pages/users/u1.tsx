@@ -1,21 +1,31 @@
 // import React from 'react'
 import React, { useState } from 'react'
-import { Table, Tag, Space } from 'antd';
+import { Table, Tag, Space, message, Popconfirm } from 'antd';
 import { connect } from 'umi';
 import UserMoel from './components/UserModel'
 
 //返回namespace-users
-const u1 = ({ users }) => {
+const u1 = ({ users, dispatch }) => {
 
   const [modelVisible, setModelVisible] = useState(false)
   const [record, setrecord] = useState(undefined)
 
 
-  const handleOk = () => {
+
+  //关闭修改对话框
+  const handleCancel = () => {
     setModelVisible(false)
   };
 
-  const handleCancel = () => {
+  //点击提交
+  const onFinish = (values) => {
+
+    dispatch({
+      type: 'users/edit',
+      payload: { ...values, key: record.key },
+    })
+
+    message.success('成功提交')
     setModelVisible(false)
   };
 
@@ -66,7 +76,20 @@ const u1 = ({ users }) => {
             setModelVisible(true)
             setrecord(record)
           }}>Edit</a>
-          <a >Delete</a>
+
+          <Popconfirm
+            title="Are you sure to delete this task?"
+            onConfirm={()=>{
+              message.success('Click on Yes');
+            }}
+            onCancel={()=>{
+              message.error('Click on No');
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <a href="#">Delete</a>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -91,10 +114,10 @@ const u1 = ({ users }) => {
       <Table loading={!data} columns={columns} dataSource={data} />
       <UserMoel
         visible={modelVisible}
-        handleOK={handleOk}
+        onFinish={onFinish}
         handleCancel={handleCancel}
-        record = {record}
-        ></UserMoel>
+        record={record}
+      ></UserMoel>
 
     </div >
   )

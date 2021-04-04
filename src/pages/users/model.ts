@@ -1,15 +1,18 @@
 import { format } from 'prettier';
 import { Effect, ImmerReducer, Reducer, Subscription } from 'umi';
-import { initOrgInfoRequest } from './service'
+import { initOrgInfoRequest,editRequest } from './service'
 
 interface UserModelTyoe{
     namespace: 'users',
     state:{},
-    reduce:{
-        save:Reducer;
-    },
+    
     effects:{
         query:Effect;
+        edit:Effect
+    },
+    reduce:{
+        save:Reducer;
+        editReducers:Reducer;
     },
     subscriptions:{
         setup:Subscription;
@@ -32,17 +35,33 @@ const UserModel:UserModelTyoe = {
             console.log(response)
            
             yield put({ type: 'save', payload: {response} });
+        },
+        *edit({ payload }, { call, put }) {
+            console.log('*edit 开始执行')
+
+            const response = yield call(editRequest, payload);
+
+            console.log('editRequest 返回为：')
+            console.log(response)
+           
+            
+            yield put({ type: 'editReducers', payload: {response} });
 
         },
     },
     reducers: {
-        //action ={type,payload}
+       
         save(state, action) {
 
             console.log('sava开始执行')
             console.log(action.payload.response)
+            return {...state,mydata:action.payload.response}
+        },
 
+        editReducers(state, action) {
 
+            console.log('edit 开始执行')
+            console.log(action.payload.response)
             return {...state,mydata:action.payload.response}
         },
         
