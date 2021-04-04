@@ -10,7 +10,14 @@ const UserModel = (props) => {
 
     //第一个参数是要执行的函数，第二个参数是一个列表，列表中的值变化时执行函数
     useEffect(() => {
-        form.setFieldsValue(props.record)
+
+        if(props.record===null){
+            form.resetFields()
+        }else{
+            //如果传入的是null或者undefined，哪不会生效
+            form.setFieldsValue(props.record)
+        }
+        
     }, [props.record])
 
 
@@ -65,24 +72,6 @@ const UserModel = (props) => {
                 </Form.Item>
 
 
-
-                {/* <Form.Item
-                    label="密码"
-                    name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
-                >
-                    <Input.Password />
-                </Form.Item> */}
-
-
-
-                {/* <Form.Item
-                // {...tailLayout}
-                >
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item> */}
             </Form>
 
 

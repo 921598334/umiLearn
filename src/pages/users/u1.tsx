@@ -1,6 +1,6 @@
 // import React from 'react'
 import React, { useState } from 'react'
-import { Table, Tag, Space, message, Popconfirm } from 'antd';
+import { Table, Tag, Space, message, Popconfirm,Button } from 'antd';
 import { connect } from 'umi';
 import UserMoel from './components/UserModel'
 
@@ -20,10 +20,19 @@ const u1 = ({ users, dispatch }) => {
   //点击提交
   const onFinish = (values) => {
 
-    dispatch({
-      type: 'users/edit',
-      payload: { ...values, key: record.key },
-    })
+    if(record===null){
+      dispatch({
+        type: 'users/add',
+        payload: { ...values},
+      })
+    }else{
+      dispatch({
+        type: 'users/edit',
+        payload: { ...values, key: record.key },
+      })
+    }
+
+    
 
     message.success('成功提交')
     setModelVisible(false)
@@ -110,7 +119,13 @@ const u1 = ({ users, dispatch }) => {
 
   return (
     <div className='ant-select-selection'>
-      <h1 >user</h1>
+      <h1 >u1</h1>
+      <Button onClick={
+        ()=>{
+          setrecord(null)
+          setModelVisible(true)
+        }
+      }>添加</Button>
       <Table loading={!data} columns={columns} dataSource={data} />
       <UserMoel
         visible={modelVisible}
